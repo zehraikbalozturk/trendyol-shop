@@ -5,25 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trendyol Fiyatlandırma Simülatörü</title>
   <style>
-    :root { --bg:#0f172a; --card:#111827; --muted:#94a3b8; --accent:#22c55e; --err:#ef4444; --border:#1f2937; }
+    :root { --bg:#0f172a; --card:#111827; --muted:#94a3b8; --accent:#22c55e; --border:#1f2937; }
     *{box-sizing:border-box}
-    body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:linear-gradient(180deg,#0b1023,#0f172a);color:#e5e7eb;margin:0;padding:24px}
+    body{font-family:Arial, Helvetica, sans-serif;background:linear-gradient(180deg,#0b1023,#0f172a);color:#e5e7eb;margin:0;padding:24px}
     h1{font-size:26px;margin:0 0 8px}
     p.sub{color:var(--muted);margin:0 0 22px}
     .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
     .span-12{grid-column:span 12}
     .span-6{grid-column:span 12}
     @media(min-width:980px){.span-6{grid-column:span 6}}
     label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-    input,select{width:100%;background:#0b1220;border:1px solid #1f2937;color:#e5e7eb;border-radius:10px;padding:10px 12px;outline:none}
+    input,select{width:100%;background:#0b1220;border:1px solid #1f2937;color:#e5e7eb;border-radius:8px;padding:8px 10px;outline:none}
     input:focus{border-color:#334155}
     table{width:100%;border-collapse:collapse}
     th,td{border-bottom:1px solid #1f2937;padding:8px 10px;text-align:left}
     th{color:#cbd5e1;font-weight:600;background:#0b1220;position:sticky;top:0}
-    .btn{display:inline-flex;align-items:center;gap:8px;background:#1e293b;border:1px solid #334155;color:#e5e7eb;padding:10px 12px;border-radius:10px;cursor:pointer}
+    .btn{display:inline-flex;align-items:center;gap:6px;background:#1e293b;border:1px solid #334155;color:#e5e7eb;padding:8px 10px;border-radius:8px;cursor:pointer}
     .btn:hover{background:#243041}
-    .btn-accent{background:var(--accent);border-color:#16a34a;color:#06210f;font-weight:700}
     .muted{color:var(--muted)}
     .row{display:flex;gap:12px;flex-wrap:wrap}
     .row>*{flex:1 1 140px}
@@ -37,51 +36,52 @@
 </head>
 <body>
   <h1>Trendyol Fiyatlandırma Simülatörü</h1>
-  <p class="sub">Komisyon, kargo ve kârı tek sayfada görün. <span class="pill">v1.1</span></p>
+  <p class="sub">Komisyon, kargo, platform ücreti ve kâr hesabı. <span class="pill">v2.0</span></p>
 
-  <!-- ANA GRID: Mini Koç + Ayarlar + Ürünler + Sepet -->
   <div class="grid">
-
-    <!-- İBRAHİM BEY'E MİNİ KOÇ -->
     <section class="card span-12">
-      <h2>İbrahim Bey'e Mini Koç 💛</h2>
-      <ol class="small" style="line-height:1.6">
-        <li><b>Ayarlar</b>’a komisyon %, eşik (300 TL) ve desi–kargo tablosunu gir.</li>
-        <li><b>Ürünler</b>’de maliyet+desi+marj yaz → tekli satış için eşik altı/üstü liste önerini gör.</li>
-        <li><b>Sepet Simülatörü</b> ile çoklu adet/ürün senaryosunda net kârı test et.</li>
-        <li><b>Akıllı Fiyat Bulucu</b>’da rakip en düşük/ortalama fiyatı gir → “Öneriyi Hesapla”. Ben sana
-          kârı koruyarak rekabetçi fiyatı çıkarırım. Ağır ürünse eşik altı, hafif ürünse eşik üstü daha mantıklı olabilir.</li>
-      </ol>
+      <h2>İbrahim Bey’e Mini Not 💛</h2>
+      <p class="small muted">0–150 TL: satıcıdan <b>43 TL</b>, 150–300 TL: satıcıdan <b>75 TL</b> kargo; her siparişte <b>10 TL</b> platform ücreti; komisyon varsayılan %20 (değiştirilebilir). 300 TL üstünde kargo, toplam desiye göre tablodan alınır.</p>
     </section>
 
-    <!-- AYARLAR -->
     <section class="card span-6">
       <h2>Ayarlar</h2>
       <div class="row">
         <div>
           <label>Komisyon Oranı (%)</label>
-          <input type="number" id="commission" value="15" step="0.1" />
+          <input type="number" id="commission" value="20" step="0.1" />
         </div>
         <div>
-          <label>Ücretsiz Kargo Eşiği (TL)</label>
-          <input type="number" id="freeThreshold" value="300" />
+          <label>Platform Ücreti (TL / sipariş)</label>
+          <input type="number" id="platformFee" value="10" step="0.01" />
         </div>
         <div>
-          <label>Kargo Bedelleri KDV Dahil mi?</label>
-          <select id="shipVat"><option value="evet" selected>Evet</option><option value="hayir">Hayır</option></select>
+          <label>Eşik-1 (TL)</label>
+          <input type="number" id="t1" value="150" />
+        </div>
+        <div>
+          <label>Eşik-2 (TL)</label>
+          <input type="number" id="t2" value="300" />
+        </div>
+        <div>
+          <label>Kargo (0–Eşik1) TL</label>
+          <input type="number" id="shipLow" value="43" step="0.01" />
+        </div>
+        <div>
+          <label>Kargo (Eşik1–Eşik2) TL</label>
+          <input type="number" id="shipMid" value="75" step="0.01" />
         </div>
       </div>
       <div style="height:10px"></div>
-      <label>Kargo Desi Tablosu (alt–üst–fiyat)</label>
+      <label>300+ TL Kargo Desi Tablosu (alt–üst–fiyat)</label>
       <table id="desiTable">
         <thead><tr><th>Desi Alt</th><th>Desi Üst</th><th>Kargo (TL)</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
       <div style="margin-top:8px"><button class="btn" id="addDesi">+ Satır Ekle</button> <button class="btn" id="resetDesi">Sıfırla</button></div>
-      <p class="note">Toplam desi hangi aralığa düşerse o satırın kargo bedeli uygulanır. Örn: 0–1 desi = 78 TL.</p>
+      <p class="note">300 TL üzerindeki sepetlerde kargo, toplam desiye göre bu tablodan hesaplanır.</p>
     </section>
 
-    <!-- ÜRÜNLER LİSTESİ -->
     <section class="card span-6">
       <h2>Ürünler</h2>
       <table id="productTable">
@@ -90,7 +90,7 @@
             <th>Ürün</th>
             <th>Maliyet (TL)</th>
             <th>Desi</th>
-            <th>Hedef Kâr Marjı (%)</th>
+            <th>Hedef Marj (%)</th>
             <th>Öneri (Eşik Altı)</th>
             <th>Öneri (Eşik Üstü)</th>
             <th></th>
@@ -99,10 +99,9 @@
         <tbody></tbody>
       </table>
       <div style="margin-top:8px"><button class="btn" id="addProduct">+ Ürün Satırı</button></div>
-      <p class="note">Öneriler tek ürün içindir. Eşik altı: kargoyu müşteri öder. Eşik üstü: kargoyu satıcı öder (tekli sipariş varsayımıyla).</p>
+      <p class="note">Eşik altı öneri, 0–150 ve 150–300 bantlarını kârı koruyarak dener ve uygun olanı seçer.</p>
     </section>
 
-    <!-- SEPET SİMÜLATÖRÜ -->
     <section class="card span-12">
       <h2>Sepet Simülatörü</h2>
       <table id="basketTable">
@@ -128,6 +127,7 @@
           <div class="kpi"><div class="muted">Sepet Ara Toplam</div><div id="k_sub">0</div></div>
           <div class="kpi"><div class="muted">Komisyon</div><div id="k_comm">0</div></div>
           <div class="kpi"><div class="muted">Kargo</div><div id="k_ship">0</div></div>
+          <div class="kpi"><div class="muted">Platform Ücreti</div><div id="k_pf">0</div></div>
         </div>
         <div class="span-6">
           <div class="kpi"><div class="muted">Toplam Maliyet</div><div id="k_cost">0</div></div>
@@ -135,35 +135,34 @@
           <div class="kpi"><div class="muted">Kâr</div><div id="k_profit" class="k-green">0</div></div>
         </div>
       </div>
-      <p class="note"><strong>Eşik durumu:</strong> <span id="thresholdState">Eşik altı</span>. Eşik aşılırsa kargo satıcıya yazılır ve kâr buna göre güncellenir.</p>
+      <p class="note"><b>Eşik durumu:</b> <span id="thresholdState">Eşik altı</span>. 0–150: sabit shipLow; 150–300: shipMid; 300+: desi tablosu.</p>
     </section>
   </div>
 
-  <!-- FIYAT ONERISI ASISTANI -->
   <section class="card span-12" style="margin-top:16px">
-    <h2>Fiyat Önerisi Asistanı</h2>
+    <h2>Fiyat Asistanı</h2>
     <div class="row">
       <div><label>Maliyet (TL)</label><input type="number" id="fa_cost" step="0.01" value="200"></div>
-      <div><label>Desi (tek ürün)</label><input type="number" id="fa_desi" step="0.01" value="2.5"></div>
-      <div><label>Adet (sepette)</label><input type="number" id="fa_qty" step="1" value="1"></div>
-      <div><label>Hedef Kâr Marjı (%)</label><input type="number" id="fa_margin" step="0.1" value="20"></div>
-      <div><label>Rakip Fiyat (opsiyonel)</label><input type="number" id="fa_comp" step="0.01" placeholder="ör. 349"></div>
+      <div><label>Desi</label><input type="number" id="fa_desi" step="0.01" value="2.5"></div>
+      <div><label>Adet</label><input type="number" id="fa_qty" step="1" value="1"></div>
+      <div><label>Hedef Marj (%)</label><input type="number" id="fa_margin" step="0.1" value="20"></div>
+      <div><label>Rakip Fiyat (ops.)</label><input type="number" id="fa_comp" step="0.01" placeholder="ör. 349"></div>
     </div>
     <div class="row" style="margin-top:8px">
       <div>
-        <label>Eşik Altı Senaryosu (kargoyu müşteri öder)</label>
+        <label>Eşik Altı</label>
         <button class="btn" id="fa_under">Hesapla</button>
         <div class="note small" id="fa_under_note"></div>
       </div>
       <div>
-        <label>Eşik Üstü Senaryosu (kargoyu satıcı öder)</label>
+        <label>Eşik Üstü (300+)</label>
         <button class="btn" id="fa_over">Hesapla</button>
         <div class="note small" id="fa_over_note"></div>
       </div>
     </div>
     <div class="grid" style="margin-top:10px">
       <div class="span-6">
-        <div class="kpi"><div class="muted">Önerilen Liste Fiyatı</div><div id="fa_price">-</div></div>
+        <div class="kpi"><div class="muted">Önerilen Fiyat</div><div id="fa_price">-</div></div>
         <div class="kpi"><div class="muted">Birim Kâr</div><div id="fa_profit">-</div></div>
       </div>
       <div class="span-6">
@@ -171,31 +170,29 @@
         <div class="kpi"><div class="muted">Toplam Kâr</div><div id="fa_totalprofit">-</div></div>
       </div>
     </div>
-    <p class="note">Not: Eşik altı hesapta fiyat × adet &lt; eşiğe sığmazsa uyarı verir. Eşik üstü hesapta kargo, toplam desiye göre birim başına bölüştürülür.</p>
   </section>
 
-  <!-- AKILLI FİYAT BULUCU (PİYASA) -->
   <section class="card span-12" style="margin-top:16px">
-    <h2>İbrahim Bey için Akıllı Fiyat Bulucu (Piyasa Modu)</h2>
-    <p class="note">Merhabalar İbrahim Bey👋 Ürünün maliyeti, desisi ve pazardaki rakip fiyatlarını gir; hem rekabetçi olup hem de kâr bırakacak liste fiyatını öneririm.</p>
+    <h2>Piyasa Modu</h2>
+    <p class="note">Kâr tabanının altına <b>asla</b> inmez. Eşik altı istenirse önce 0–150, sonra 150–300 bandı denenir.</p>
 
     <div class="row">
       <div><label>Ürün Adı (ops.)</label><input id="pm_name" placeholder="Örn: 25kg Harç"></div>
       <div><label>Geliş Maliyeti (TL)</label><input type="number" id="pm_cost" step="0.01" value="200"></div>
       <div><label>Desi</label><input type="number" id="pm_desi" step="0.01" value="2.5"></div>
-      <div><label>Hedef Kâr Marjı (%)</label><input type="number" id="pm_margin" step="0.1" value="20"></div>
+      <div><label>Hedef Marj (%)</label><input type="number" id="pm_margin" step="0.1" value="20"></div>
     </div>
 
     <div class="row" style="margin-top:8px">
-      <div><label>Rakip En Düşük Fiyat (TL)</label><input type="number" id="pm_comp_min" step="0.01" placeholder="örn. 349"></div>
-      <div><label>Rakip Ortalama Fiyat (TL) (ops.)</label><input type="number" id="pm_comp_avg" step="0.01" placeholder="örn. 369"></div>
+      <div><label>Rakip En Düşük (TL)</label><input type="number" id="pm_comp_min" step="0.01" placeholder="örn. 349"></div>
+      <div><label>Rakip Ortalama (TL) (ops.)</label><input type="number" id="pm_comp_avg" step="0.01" placeholder="örn. 369"></div>
       <div>
         <label>Strateji</label>
         <select id="pm_strategy">
-          <option value="below_min">En düşükten bir tık aşağı (~%1)</option>
+          <option value="below_min">En düşükten biraz aşağı (~%1)</option>
           <option value="match_min">En düşükle eşit</option>
           <option value="near_avg">Ortalamaya yakın (~%-3)</option>
-          <option value="profit_first">Kâra öncelik ver</option>
+          <option value="profit_first">Kâra öncelik</option>
         </select>
       </div>
       <div>
@@ -207,13 +204,11 @@
       </div>
     </div>
 
-    <div style="margin-top:8px">
-      <button class="btn" id="pm_calc">Öneriyi Hesapla</button>
-    </div>
+    <div style="margin-top:8px"><button class="btn" id="pm_calc">Öneriyi Hesapla</button></div>
 
     <div class="grid" style="margin-top:12px">
       <div class="span-6">
-        <div class="kpi"><div class="muted">Önerilen Liste Fiyatı</div><div id="pm_price">-</div></div>
+        <div class="kpi"><div class="muted">Önerilen Fiyat</div><div id="pm_price">-</div></div>
         <div class="kpi"><div class="muted">Birim Kâr</div><div id="pm_unit_profit">-</div></div>
       </div>
       <div class="span-6">
@@ -223,33 +218,30 @@
     </div>
 
     <p class="note" id="pm_note"></p>
-
-    <hr style="border-color:#1f2937; margin:14px 0">
-    <p class="small muted"><b>Mini Koç:</b> Hafif (düşük desi) ürünler eşik üstünde de kârlı kalır. Ağır (yüksek desi)
-      ürünlerde eşik altı daha avantajlı olabilir. Rakip çok düşükse, kâr hedefinden aşağı inmiyoruz — kâr önceliğimizdir 😊</p>
   </section>
 
   <script>
-    // ---------- Helpers ----------
     const fmt = n => (isFinite(n) ? new Intl.NumberFormat('tr-TR',{maximumFractionDigits:0}).format(n) : '0');
     const val = el => parseFloat(el.value || '0');
 
-    // Ship price lookup by total desi
+    const commissionRate = () => val(document.getElementById('commission'))/100;
+    const platformFee = () => val(document.getElementById('platformFee'));
+    const T1 = () => val(document.getElementById('t1'));
+    const T2 = () => val(document.getElementById('t2'));
+    const shipLow = () => val(document.getElementById('shipLow'));
+    const shipMid = () => val(document.getElementById('shipMid'));
+
     function getShipByDesi(totalDesi){
       const rows = [...document.querySelectorAll('#desiTable tbody tr')];
       for(const r of rows){
-        const low = parseFloat(r.querySelector('.d-low').value||'0');
-        const high = parseFloat(r.querySelector('.d-high').value||'0');
-        const price = parseFloat(r.querySelector('.d-price').value||'0');
-        if(totalDesi >= low && totalDesi < high){ return price; }
+        const low = parseFloat(r.querySelector('.d-low')?.value||'0');
+        const high = parseFloat(r.querySelector('.d-high')?.value||'0');
+        const price = parseFloat(r.querySelector('.d-price')?.value||'0');
+        if(totalDesi >= low && totalDesi < high) return price;
       }
-      return 0; // not found or 0 desi
+      return 0;
     }
 
-    function commissionRate(){ return val(document.getElementById('commission'))/100; }
-    function threshold(){ return val(document.getElementById('freeThreshold')); }
-
-    // ---------- DESI TABLE ----------
     function addDesiRow(a=0,b=1,p=78){
       const tr=document.createElement('tr');
       tr.innerHTML=`
@@ -270,7 +262,6 @@
       recalcAll();
     }
 
-    // ---------- PRODUCTS ----------
     function addProductRow(p={name:'',cost:'',desi:'',margin:20}){
       const tr=document.createElement('tr');
       tr.innerHTML=`
@@ -286,25 +277,38 @@
       recalcAll();
     }
 
-    function productShipForOne(desi){ return getShipByDesi(parseFloat(desi||0)); }
+    const requiredPrice = (unitCost, marginRate, commRate, extraPerUnit) => {
+      const denom = 1 - (marginRate + commRate);
+      return denom>0 ? Math.ceil((unitCost + extraPerUnit)/denom) : Infinity;
+    };
 
     function computeProductSuggestions(){
       const rows=[...document.querySelectorAll('#productTable tbody tr')];
-      const cRate=commissionRate();
-      rows.forEach(r=>{
-        const cost = parseFloat(r.querySelector('.p-cost').value||'0');
-        const desi = parseFloat(r.querySelector('.p-desi').value||'0');
-        const margin = (parseFloat(r.querySelector('.p-margin').value||'0')/100);
-        const denom = 1-(cRate+margin);
-        const under = denom>0 ? Math.ceil(cost/denom) : 0;
-        const shipOne = productShipForOne(desi);
-        const over = denom>0 ? Math.ceil((cost+shipOne)/denom) : 0;
-        r.querySelector('.p-under').textContent = fmt(under);
-        r.querySelector('.p-over').textContent  = fmt(over);
+      const r = commissionRate();
+      const pf = platformFee();
+      const t1=T1(), t2=T2();
+      rows.forEach(row=>{
+        const cost = parseFloat(row.querySelector('.p-cost')?.value||'0');
+        const desi = parseFloat(row.querySelector('.p-desi')?.value||'0');
+        const m    = (parseFloat(row.querySelector('.p-margin')?.value||'0')/100);
+        // Alt bant 1: 0–t1
+        const pLow  = requiredPrice(cost, m, r, pf + shipLow());
+        const validLow = pLow < t1;
+        // Alt bant 2: t1–t2
+        const pMid  = requiredPrice(cost, m, r, pf + shipMid());
+        const validMid = pMid < t2 && pMid >= t1;
+        // Eşik altı öneri: uygun olanın en düşüğü
+        let under = Infinity;
+        if(validLow) under = Math.min(under, pLow);
+        if(validMid) under = Math.min(under, pMid);
+        // Eşik üstü: 300+ → desi tablosu
+        const shipOne = getShipByDesi(desi);
+        const over = requiredPrice(cost, m, r, pf + shipOne);
+        row.querySelector('.p-under').textContent = isFinite(under)? fmt(under) : '—';
+        row.querySelector('.p-over').textContent  = isFinite(over)? fmt(over) : '—';
       });
     }
 
-    // ---------- BASKET ----------
     function addBasketRow(item={name:'',price:'',cost:'',desi:'',qty:1}){
       const tr=document.createElement('tr');
       tr.innerHTML=`
@@ -325,91 +329,53 @@
     function computeBasket(){
       const rows=[...document.querySelectorAll('#basketTable tbody tr')];
       let subtotal=0, totalCost=0, totalDesi=0;
-      rows.forEach(r=>{
-        const price=parseFloat(r.querySelector('.b-price').value||'0');
-        const cost=parseFloat(r.querySelector('.b-cost').value||'0');
-        const desi=parseFloat(r.querySelector('.b-desi').value||'0');
-        const qty =parseInt(r.querySelector('.b-qty').value||'0');
+      rows.forEach(rw=>{
+        const price=parseFloat(rw.querySelector('.b-price')?.value||'0');
+        const cost=parseFloat(rw.querySelector('.b-cost')?.value||'0');
+        const desi=parseFloat(rw.querySelector('.b-desi')?.value||'0');
+        const qty =parseInt(rw.querySelector('.b-qty')?.value||'0');
         const line=price*qty; const cline=cost*qty; const dline=desi*qty;
         subtotal+=line; totalCost+=cline; totalDesi+=dline;
-        r.querySelector('.b-line').textContent=fmt(line);
-        r.querySelector('.b-costline').textContent=fmt(cline);
-        r.querySelector('.b-desiline').textContent=fmt(dline);
+        rw.querySelector('.b-line').textContent=fmt(line);
+        rw.querySelector('.b-costline').textContent=fmt(cline);
+        rw.querySelector('.b-desiline').textContent=fmt(dline);
       });
-      const cRate=commissionRate();
-      const needShip = subtotal >= threshold();
-      const ship = needShip ? getShipByDesi(totalDesi) : 0;
-      const comm = subtotal * cRate;
-      const net = subtotal - ship - comm;
+      const r = commissionRate();
+      const t1=T1(), t2=T2();
+      let ship = 0, bandText = '';
+      if(subtotal < t1){ ship = shipLow(); bandText = `0–${fmt(t1)}: sabit kargo`; }
+      else if(subtotal < t2){ ship = shipMid(); bandText = `${fmt(t1)}–${fmt(t2)}: sabit kargo`; }
+      else { ship = getShipByDesi(totalDesi); bandText = `300+: desi kargo`; }
+      const pf = platformFee();
+      const comm = subtotal * r;
+      const net = subtotal - ship - pf - comm;
       const profit = net - totalCost;
       document.getElementById('k_sub').textContent = fmt(subtotal);
       document.getElementById('k_cost').textContent= fmt(totalCost);
       document.getElementById('k_ship').textContent= fmt(ship);
       document.getElementById('k_comm').textContent= fmt(comm);
+      document.getElementById('k_pf').textContent  = fmt(pf);
       document.getElementById('k_net').textContent = fmt(net);
-      const pf = document.getElementById('k_profit');
-      pf.textContent = fmt(profit);
-      pf.classList.toggle('k-red', profit<0);
-      pf.classList.toggle('k-green', profit>=0);
-      document.getElementById('thresholdState').textContent = needShip ? 'EŞİK AŞILDI (Kargoyu satıcı öder)' : 'EŞİK ALTI (Kargoyu alıcı öder)';
+      const pfEl = document.getElementById('k_profit');
+      pfEl.textContent = fmt(profit);
+      pfEl.classList.toggle('k-red', profit<0);
+      pfEl.classList.toggle('k-green', profit>=0);
+      document.getElementById('thresholdState').textContent = bandText;
     }
 
     function recalcAll(){ computeProductSuggestions(); computeBasket(); }
 
-    // ---------- Events & Init ----------
     document.getElementById('addDesi').addEventListener('click',()=>{addDesiRow(0,0,0)});
     document.getElementById('resetDesi').addEventListener('click',resetDesi);
     document.getElementById('addProduct').addEventListener('click',()=>addProductRow({}));
     document.getElementById('addBasket').addEventListener('click',()=>addBasketRow({}));
-    document.getElementById('commission').addEventListener('input',recalcAll);
-    document.getElementById('freeThreshold').addEventListener('input',recalcAll);
+    ['commission','platformFee','t1','t2','shipLow','shipMid'].forEach(id=>{
+      document.getElementById(id).addEventListener('input',recalcAll);
+    });
 
     resetDesi();
     addProductRow({name:'Harç 25kg',cost:200,desi:2.5,margin:20});
     addBasketRow({name:'Harç 25kg',price:350,cost:200,desi:2.5,qty:1});
-
-    // ----- Advisor logic -----
-    function adviseUnder(){
-      const c = parseFloat(document.getElementById('fa_cost').value||'0');
-      const d = parseFloat(document.getElementById('fa_desi').value||'0');
-      const q = parseInt(document.getElementById('fa_qty').value||'1');
-      const m = parseFloat(document.getElementById('fa_margin').value||'0')/100;
-      const comp = parseFloat(document.getElementById('fa_comp').value||'0');
-      const r = commissionRate();
-      const denom = 1-(r+m);
-      const minPrice = denom>0 ? Math.ceil(c/denom) : 0;
-      const maxPriceToStayUnder = Math.floor((threshold()-0.01)/Math.max(q,1));
-      let note = '';
-      if(minPrice>maxPriceToStayUnder){
-        note = 'Seçilen marjla eşik altında kalmak imkansız. En az ' + fmt(minPrice) + ' TL gerekir; ' + q + ' adetle eşik altı sınırı ' + fmt(maxPriceToStayUnder) + ' TL.';
-        renderAdvisor('-', '-', '-', '-', note);
-        return;
-      }
-      let suggested = minPrice;
-      if(comp && suggested>comp){ suggested = comp; note = 'Rakip fiyata uyum için ' + fmt(comp) + ' seçildi.'; }
-      const subtotal = suggested*q;
-      const comm = subtotal*r;
-      const net = subtotal - comm;
-      const profitUnit = suggested - c - (suggested*r);
-      const totalProfit = net - c*q;
-      renderAdvisor(suggested, profitUnit, subtotal, totalProfit, note || 'Eşik altı: kargoyu müşteri öder.');
-    }
-
-    function adviseOver(){
-      const c = parseFloat(document.getElementById('fa_cost').value||'0');
-      const d = parseFloat(document.getElementById('fa_desi').value||'0');
-      const q = parseInt(document.getElementById('fa_qty').value||'1');
-      const m = parseFloat(document.getElementById('fa_margin').value||'0')/100;
-      const comp = parseFloat(document.getElementById('fa_comp').value||'0');
-      const r = commissionRate();
-      const ship = getShipByDesi(d*q);
-      const denom = 1-(r+m);
-      let p = denom>0 ? Math.ceil((c + ship/Math.max(q,1))/denom) : 0;
-      let note = 'Kargo ' + fmt(ship) + ' TL (toplam desi ' + (d*q) + '). Birim pay ~ ' + fmt(Math.ceil(ship/Math.max(q,1))) + ' TL.';
-      if(comp && p>comp){ note += ' Uyarı: Öneri rakip fiyatını (' + fmt(comp) + ') aşıyor.'; }
-      const subtotal = p*q; const comm = subtotal*r; const net = subtotal - comm - ship; const profitUnit = (net - c*q)/q; const totalProfit = net - c*q;
-      renderAdvisor(p, profitUnit, subtotal, totalProfit, note);
-    }
 
     function renderAdvisor(price,unitProfit,subtotal,totalProfit,note){
       document.getElementById('fa_price').textContent = isFinite(price)? fmt(price):'-';
@@ -422,86 +388,129 @@
       document.getElementById('fa_under_note').textContent = '';
       document.getElementById('fa_over_note').textContent = '';
       if(note){
-        if(note.startsWith('Kargo') || note.startsWith('Uyarı')) document.getElementById('fa_over_note').textContent = note; else document.getElementById('fa_under_note').textContent = note;
+        if(note.startsWith('300+')) document.getElementById('fa_over_note').textContent = note; else document.getElementById('fa_under_note').textContent = note;
       }
+    }
+
+    function adviseUnder(){
+      const c = val(document.getElementById('fa_cost'));
+      const d = val(document.getElementById('fa_desi'));
+      const q = Math.max(1, parseInt(document.getElementById('fa_qty').value||'1'));
+      const m = val(document.getElementById('fa_margin'))/100;
+      const comp = val(document.getElementById('fa_comp'));
+      const r = commissionRate();
+      const pf = platformFee();
+      const t1=T1(), t2=T2();
+
+      // Deneme 1: 0–t1 bandı
+      const pLow = requiredPrice(c, m, r, (pf + shipLow())/q + (q>1?0:0));
+      // Deneme 2: t1–t2 bandı
+      const pMid = requiredPrice(c, m, r, (pf + shipMid())/q + (q>1?0:0));
+
+      let suggested = Infinity; let note = '';
+      if(pLow*q < t1){ suggested = pLow; note = `0–${fmt(t1)} bandı seçildi.`; }
+      else if(pMid*q < t2){ suggested = pMid; note = `${fmt(t1)}–${fmt(t2)} bandı seçildi.`; }
+      else { renderAdvisor('-', '-', '-', '-', 'Eşik altı mümkün değil; 300+ değerlendirin.'); return; }
+
+      if(comp && suggested>comp){ suggested = comp; note += ' Rakip fiyata uyduruldu.'; }
+
+      const subtotal = suggested*q;
+      const comm = subtotal*r;
+      const ship = subtotal < t1 ? shipLow() : shipMid();
+      const net  = subtotal - comm - pf - ship;
+      const totalProfit = net - c*q;
+      const unitProfit = totalProfit/q;
+      renderAdvisor(suggested, unitProfit, subtotal, totalProfit, note);
+    }
+
+    function adviseOver(){
+      const c = val(document.getElementById('fa_cost'));
+      const d = val(document.getElementById('fa_desi'));
+      const q = Math.max(1, parseInt(document.getElementById('fa_qty').value||'1'));
+      const m = val(document.getElementById('fa_margin'))/100;
+      const comp = val(document.getElementById('fa_comp'));
+      const r = commissionRate();
+      const pf = platformFee();
+      const t2=T2();
+
+      const shipTotal = getShipByDesi(d*q);
+      const p = requiredPrice(c, m, r, (pf + shipTotal)/q);
+      let suggested = p;
+      let note = `300+ bandı: toplam kargo ${fmt(shipTotal)} TL (desi ${d*q}).`;
+      if(comp && suggested>comp){ note += ` Uyarı: Öneri rakip ${fmt(comp)} TL üstünde.`; }
+
+      const subtotal = suggested*q;
+      if(subtotal < t2){ // Güvenlik: yanlışlıkla 300 altına düşmesin
+        const adjust = Math.ceil((t2 + 1)/q);
+        suggested = Math.max(suggested, adjust);
+      }
+      const comm = suggested*q*r;
+      const net  = suggested*q - comm - pf - shipTotal;
+      const totalProfit = net - c*q;
+      const unitProfit = totalProfit/q;
+      renderAdvisor(suggested, unitProfit, suggested*q, totalProfit, note);
     }
 
     document.getElementById('fa_under').addEventListener('click', adviseUnder);
     document.getElementById('fa_over').addEventListener('click', adviseOver);
 
-    // --------- Piyasa Modu Hesabı ---------
     function clampToStrategy(basePrice, minComp, avgComp, strategy){
       if(!isFinite(basePrice) || basePrice<=0) return 0;
-      if(strategy==='profit_first') return basePrice; // kâra öncelik: piyasa hedefini dikkate alma
-      if(!minComp && !avgComp) return basePrice;     // rakip verisi yoksa sadece basePrice
-
+      if(strategy==='profit_first') return basePrice;
+      if(!minComp && !avgComp) return basePrice;
       let target = basePrice;
-      if(strategy==='below_min' && minComp){
-        target = Math.min(basePrice, Math.max(1, Math.floor(minComp*0.99))); // en düşükten ~%1 aşağı
-      }else if(strategy==='match_min' && minComp){
-        target = Math.min(basePrice, Math.floor(minComp)); // en düşükle eşit
-      }else if(strategy==='near_avg' && avgComp){
-        target = Math.min(basePrice, Math.floor(avgComp*0.97)); // ortalamaya ~%3 aşağısı
-      }
+      if(strategy==='below_min' && minComp){ target = Math.min(basePrice, Math.max(1, Math.floor(minComp*0.99))); }
+      else if(strategy==='match_min' && minComp){ target = Math.min(basePrice, Math.floor(minComp)); }
+      else if(strategy==='near_avg' && avgComp){ target = Math.min(basePrice, Math.floor(avgComp*0.97)); }
       return target;
     }
 
     function pmCalc(){
-      const name    = document.getElementById('pm_name').value.trim();
-      const cost    = parseFloat(document.getElementById('pm_cost').value||'0');
-      const desi    = parseFloat(document.getElementById('pm_desi').value||'0');
-      const marginR = (parseFloat(document.getElementById('pm_margin').value||'0')/100);
-      const minComp = parseFloat(document.getElementById('pm_comp_min').value||'0');
-      const avgComp = parseFloat(document.getElementById('pm_comp_avg').value||'0');
+      const cost    = val(document.getElementById('pm_cost'));
+      const desi    = val(document.getElementById('pm_desi'));
+      const marginR = val(document.getElementById('pm_margin'))/100;
+      const minComp = val(document.getElementById('pm_comp_min'));
+      const avgComp = val(document.getElementById('pm_comp_avg'));
       const strat   = document.getElementById('pm_strategy').value;
       const keepUnder = document.getElementById('pm_keep_under').checked;
-      const qty     = parseInt(document.getElementById('pm_qty').value||'1');
+      const qty     = Math.max(1, parseInt(document.getElementById('pm_qty').value||'1'));
 
       const r = commissionRate();
+      const pf = platformFee();
+      const t1=T1(), t2=T2();
+
       const denom = 1-(r+marginR);
-      if(denom<=0){
-        document.getElementById('pm_note').textContent = 'Marj + komisyon toplamı %100 veya üstünde olamaz.';
-        return;
+      if(denom<=0){ document.getElementById('pm_note').textContent = 'Marj + komisyon %100 veya üzeri olamaz.'; return; }
+
+      let minProfitPrice = Infinity, noteParts=[];
+
+      if(keepUnder){
+        // Önce 0–t1, sonra t1–t2 dener
+        const pLow = requiredPrice(cost, marginR, r, (pf + shipLow())/qty);
+        if(pLow*qty < t1){ minProfitPrice = pLow; noteParts.push(`0–${fmt(t1)} bandı uygun.`); }
+        else {
+          const pMid = requiredPrice(cost, marginR, r, (pf + shipMid())/qty);
+          if(pMid*qty < t2){ minProfitPrice = pMid; noteParts.push(`${fmt(t1)}–${fmt(t2)} bandı uygun.`); }
+        }
+        if(!isFinite(minProfitPrice) || minProfitPrice===Infinity){ document.getElementById('pm_note').textContent = 'Eşik altı kârlı fiyat bulunamadı. 300+ deneyin.'; return; }
+      } else {
+        const shipTotal = getShipByDesi(desi*qty);
+        minProfitPrice = requiredPrice(cost, marginR, r, (pf + shipTotal)/qty);
+        noteParts.push(`300+; kargo toplamı ${fmt(shipTotal)} TL.`);
+        if(minProfitPrice*qty < t2){ minProfitPrice = Math.ceil((t2+1)/qty); }
       }
 
-      // 1) Kâr tabanı (tek ürün)
-      const shipOneIfOver = getShipByDesi(desi);
-      let basePriceOver   = Math.ceil((cost + shipOneIfOver)/denom); // eşik üstünde (kargo satıcıda)
-      let basePriceUnder  = Math.ceil(cost/denom);                   // eşik altında (kargo müşteride)
-
-      // 2) Eşik tavanı (keepUnder=true ise price * qty < threshold)
-      const th = threshold();
-      const maxPriceToStayUnder = Math.floor((th-0.01)/Math.max(1,qty));
-      const priceCeil = keepUnder ? maxPriceToStayUnder : 10**9;
-
-      // 3) Piyasa stratejisi (kârdan aşağı inmeden)
-      let minProfitPrice = keepUnder ? basePriceUnder : basePriceOver;
       let strategyPrice  = clampToStrategy(minProfitPrice, isFinite(minComp)?minComp:0, isFinite(avgComp)?avgComp:0, strat);
+      let suggested = Math.max(minProfitPrice, strategyPrice);
 
-      // 4) Son öneri
-      let suggested = Math.min(priceCeil, Math.max(minProfitPrice, strategyPrice));
-      if(!isFinite(suggested) || suggested<=0) suggested = minProfitPrice;
+      const subtotal = suggested*qty;
+      let ship=0; if(subtotal < t1) ship=shipLow(); else if(subtotal < t2) ship=shipMid(); else ship=getShipByDesi(desi*qty);
+      const comm = subtotal*r; const net = subtotal - comm - pf - ship; const totalProfit = net - cost*qty; const unitProfit = totalProfit/qty;
 
-      // 5) Sepet, komisyon, kargo ve kâr
-      const subtotal = suggested * qty;
-      const needShip = !keepUnder && (subtotal >= th); // keepUnder açıksa zaten altındayız
-      const ship = needShip ? getShipByDesi(desi*qty) : 0;
-      const comm = subtotal * r;
-      const net  = subtotal - comm - ship;
-      const totalProfit = net - cost*qty;
-      const unitProfit  = totalProfit / Math.max(1,qty);
+      if(totalProfit < 0){ // güvenlik
+        suggested = requiredPrice(cost, marginR, r, (pf + ship)/qty);
+      }
 
-      // 6) Not/koç
-      let note = [];
-      if(keepUnder){ note.push(`Eşik altı hedefi açık: ${qty} adet × ${fmt(suggested)} = ${fmt(subtotal)} TL (< ${fmt(th)})`); }
-      if(strat==='below_min' && minComp){ note.push(`Rakip en düşük ${fmt(minComp)} TL. Kârdan taviz vermeden bir tık altında konumlandı.`); }
-      if(strat==='match_min' && minComp){ note.push(`Rakip en düşük ${fmt(minComp)} TL ile eşleştirildi (kâr korundu).`); }
-      if(strat==='near_avg' && avgComp){ note.push(`Rakip ortalama ${fmt(avgComp)} TL civarı; daha rekabetçi olması için biraz altında.`); }
-      if(strat==='profit_first'){ note.push(`Kâra öncelik verildi; piyasa fiyatı sadece referans.`); }
-      if(suggested===minProfitPrice && (minComp||avgComp)){ note.push(`Not: Rakip hedefi çok düşük kaldığı için kâr tabanının altına inmedi.`); }
-      if(needShip){ note.push(`Eşik aşıldı: kargo ${fmt(ship)} TL (toplam desi ${desi*qty}).`); }
-
-      // 7) Ekrana yaz
       document.getElementById('pm_price').textContent = fmt(suggested);
       document.getElementById('pm_unit_profit').textContent = fmt(unitProfit);
       document.getElementById('pm_subtotal').textContent = fmt(subtotal);
@@ -509,7 +518,7 @@
       tp.textContent = fmt(totalProfit);
       tp.classList.toggle('k-red', totalProfit<0);
       tp.classList.toggle('k-green', totalProfit>=0);
-      document.getElementById('pm_note').textContent = note.join(' ');
+      document.getElementById('pm_note').textContent = noteParts.join(' ');
     }
 
     document.getElementById('pm_calc').addEventListener('click', pmCalc);
